@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materiais ETE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            background: #f4f7fb;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100vh;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        /* ============================================================
+           BARRA DE TOPO (menu horizontal)
+           ============================================================ */
+        .topbar {
+            background: linear-gradient(90deg, #0b1e33 0%, #0e2a44 60%, #1a4a6e 100%);
+            color: #e0edff;
+            display: flex;
+            align-items: center;
+            padding: 12px 22px;
+            gap: 22px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .topbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.4px;
+            white-space: nowrap;
+        }
+
+        .topbar-brand .badge {
+            background: #2a7faa;
+            font-size: 0.72rem;
+            padding: 3px 10px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #e0f0ff;
+        }
+
+        .topbar-divider {
+            width: 1px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .menu-lateral {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            flex-wrap: wrap;
+        }
+
+        .menu-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: #b8d1e9;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .menu-btn i {
+            font-size: 1.15rem;
+            font-style: normal;
+        }
+
+        .menu-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .menu-btn.active {
+            background: #2a7faa;
+            color: white;
+            border-color: #4aa3d1;
+            box-shadow: 0 6px 14px -6px rgba(42, 127, 170, 0.9);
+        }
+
+        /* ============================================================
+           CONTEÚDO PRINCIPAL
+           ============================================================ */
+        .content-area {
+            flex: 1;
+            background: #f8fafd;
+            padding: 14px 18px;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .page {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        .page-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0b1e33;
+            letter-spacing: -0.4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .page-title i {
+            font-size: 1.4rem;
+            font-style: normal;
+        }
+
+        .links-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .link-card {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            padding: 9px 16px;
+            border-radius: 40px;
+            text-decoration: none;
+            color: #0b1e33;
+            font-weight: 600;
+            font-size: 0.88rem;
+            border: 1px solid #cdddee;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .link-card:hover {
+            background: #e8f0fe;
+            border-color: #2a7faa;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 16px -10px #2a7faa60;
+        }
+
+        .link-card i {
+            font-size: 1.15rem;
+            font-style: normal;
+        }
+
+        .link-drive i { color: #1a73e8; }
+        .link-form i { color: #d93025; }
+        .link-exercicio i { color: #0f9d58; }
+
+        /* ===== IFRAME ===== */
+        .iframe-wrapper {
+            flex: 1;
+            width: 100%;
+            min-height: 0;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 22px -8px rgba(0, 0, 0, 0.12);
+            border: 1px solid #dfe9f2;
+            overflow: hidden;
+            display: flex;
+            transition: box-shadow 0.2s;
+        }
+
+        .iframe-wrapper:hover {
+            box-shadow: 0 18px 32px -10px rgba(0, 80, 130, 0.18);
+        }
+
+        .iframe-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+            background: #ffffff;
+            flex: 1;
+        }
+
+        /* ============================================================
+           MODAL GENÉRICO (Drive / Formulário / Exercício)
+           ============================================================ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(11, 30, 51, 0.7);
+            backdrop-filter: blur(6px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 500;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        .modal {
+            width: 100%;
+            max-width: 580px;
+            background: #ffffff;
+            border-radius: 26px;
+            padding: 30px 28px;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5);
+            animation: modalSlideIn 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            gap: 16px;
+        }
+
+        .modal-header h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #0b1e33;
+            letter-spacing: -0.4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-header h2 i {
+            font-style: normal;
+        }
+
+        .modal-header p {
+            font-size: 0.88rem;
+            color: #5e7a94;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .modal-close {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: none;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+
+        .modal-close:hover {
+            background: #fee2e2;
+            color: #dc2626;
+            transform: rotate(90deg);
+        }
+
+        .disciplinas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .disciplina-card {
+            background: #f8fafd;
+            border: 2px solid #dfe9f2;
+            border-radius: 16px;
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .disciplina-card:hover {
+            border-color: #2a7faa;
+            background: #eef6fc;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px -10px rgba(42, 127, 170, 0.4);
+        }
+
+        .disciplina-card.selected {
+            border-color: #2a7faa;
+            background: linear-gradient(135deg, #e0f0ff, #d4e8f7);
+            box-shadow: 0 0 0 3px rgba(42, 127, 170, 0.2);
+        }
+
+        .disciplina-card .icon {
+            font-size: 1.9rem;
+            line-height: 1;
+        }
+
+        .disciplina-card .name {
+            font-weight: 700;
+            font-size: 0.92rem;
+            color: #0b1e33;
+        }
+
+        .disciplina-card .prof {
+            font-size: 0.74rem;
+            color: #5e7a94;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            padding-top: 16px;
+            border-top: 1px solid #e2eaf3;
+        }
+
+        .btn {
+            padding: 11px 22px;
+            border-radius: 14px;
+            font-size: 0.93rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2a7faa, #1e4f72);
+            color: white;
+            box-shadow: 0 8px 16px -6px rgba(42, 127, 170, 0.6);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 22px -6px rgba(42, 127, 170, 0.8);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Botão do modal Drive (azul Google) */
+        .modal[data-tipo="drive"] .btn-primary {
+            background: linear-gradient(135deg, #1a73e8, #1557b0);
+            box-shadow: 0 8px 16px -6px rgba(26, 115, 232, 0.6);
+        }
+        .modal[data-tipo="drive"] .btn-primary:hover:not(:disabled) {
+            box-shadow: 0 12px 22px -6px rgba(26, 115, 232, 0.85);
+        }
+
+        /* Botão do modal Formulário (vermelho Google) */
+        .modal[data-tipo="formulario"] .btn-primary {
+            background: linear-gradient(135deg, #d93025, #a5231a);
+            box-shadow: 0 8px 16px -6px rgba(217, 48, 37, 0.6);
+        }
+        .modal[data-tipo="formulario"] .btn-primary:hover:not(:disabled) {
+            box-shadow: 0 12px 22px -6px rgba(217, 48, 37, 0.85);
+        }
+
+        /* Botão do modal Exercício (verde Google) */
+        .modal[data-tipo="exercicio"] .btn-primary {
+            background: linear-gradient(135deg, #0f9d58, #0b7c44);
+            box-shadow: 0 8px 16px -6px rgba(15, 157, 88, 0.6);
+        }
+        .modal[data-tipo="exercicio"] .btn-primary:hover:not(:disabled) {
+            box-shadow: 0 12px 22px -6px rgba(15, 157, 88, 0.85);
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 900px) {
+            .topbar {
+                padding: 10px 14px;
+                gap: 14px;
+                flex-wrap: wrap;
+            }
+            .topbar-brand {
+                font-size: 1.05rem;
+            }
+            .topbar-divider {
+                display: none;
+            }
+            .menu-lateral {
+                width: 100%;
+                gap: 6px;
+            }
+            .menu-btn {
+                flex: 1 1 auto;
+                justify-content: center;
+                padding: 9px 12px;
+                font-size: 0.85rem;
+            }
+            .content-area {
+                padding: 12px;
+            }
+            .page-title {
+                font-size: 1.05rem;
+            }
+            .link-card {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            .link-card span {
+                display: none;
+            }
+            .link-card i {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .modal {
+                padding: 22px 18px;
+            }
+            .disciplinas-grid {
+                grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+            }
+            .page-title i {
+                font-size: 1.2rem;
+            }
+            .page-title {
+                font-size: 1rem;
+            }
+            .modal-actions {
+                flex-direction: column-reverse;
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- BARRA DE TOPO -->
+        <header class="topbar">
+            <div class="topbar-brand">
+                📘 Materiais ETE <span class="badge">v1</span>
+            </div>
+            <div class="topbar-divider"></div>
+            <nav class="menu-lateral">
+                <button class="menu-btn active" data-page="java">
+                    <i>☕</i> Material Java
+                </button>
+                <button class="menu-btn" data-page="web">
+                    <i>🌐</i> Material WEB
+                </button>
+                <button class="menu-btn" data-page="mobile">
+                    <i>📱</i> Material Mobile
+                </button>
+            </nav>
+        </header>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="content-area">
+            <!-- PÁGINA JAVA -->
+            <section id="java" class="page active">
+                <div class="page-header">
+                    <h2 class="page-title"><i>☕</i> Material Java</h2>
+                    <div class="links-group">
+                        <button type="button" class="link-card link-drive" data-drive-page="java">
+                            <i>📁</i> <span>Drive</span>
+                        </button>
+                        <button type="button" class="link-card link-form" data-form-page="java">
+                            <i>📋</i> <span>Formulário</span>
+                        </button>
+                        <button type="button" class="link-card link-exercicio" data-exercicio-page="java">
+                            <i>💻</i> <span>Exercício</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="iframe-wrapper">
+                    <iframe src="https://docs.google.com/spreadsheets/d/1K0y6zofJ8ruDF2v2ibeZWRTevu9gHHV3aA4B_0pdqYQ/edit?usp=sharing" title="Planilha Java" allowfullscreen></iframe>
+                </div>
+                </section>
+
+            <!-- PÁGINA WEB -->
+            <section id="web" class="page">
+                <div class="page-header">
+                    <h2 class="page-title"><i>🌐</i> Material WEB</h2>
+                    <div class="links-group">
+                        <button type="button" class="link-card link-drive" data-drive-page="web">
+                            <i>📁</i> <span>Drive</span>
+                        </button>
+                        <button type="button" class="link-card link-form" data-form-page="web">
+                            <i>📋</i> <span>Formulário</span>
+                        </button>
+                        <button type="button" class="link-card link-exercicio" data-exercicio-page="web">
+                            <i>💻</i> <span>Exercício</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="iframe-wrapper">
+                    <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vR3c89Uq93m0oBUiXCJPCxjgXI3fRGLws8eIh9iLM2PdrWHDIL4TvQ5WxGBi2QJ2dhHV8Dyowqe-hL3/pubhtml?widget=true&amp;headers=false"></iframe>
+                </div>
+            </section>
+
+            <!-- PÁGINA MOBILE -->
+            <section id="mobile" class="page">
+                <div class="page-header">
+                    <h2 class="page-title"><i>📱</i> Material Mobile</h2>
+                    <div class="links-group">
+                        <button type="button" class="link-card link-drive" data-drive-page="mobile">
+                            <i>📁</i> <span>Drive</span>
+                        </button>
+                        <button type="button" class="link-card link-form" data-form-page="mobile">
+                            <i>📋</i> <span>Formulário</span>
+                        </button>
+                        <button type="button" class="link-card link-exercicio" data-exercicio-page="mobile">
+                            <i>💻</i> <span>Exercício</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="iframe-wrapper">
+                    <iframe src="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/preview?usp=sharing" title="Planilha Mobile" allowfullscreen></iframe>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ============================================================
+         MODAL DE ESCOLHA DE DISCIPLINA (único, reutilizado)
+         ============================================================ -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal" id="modalBox" data-tipo="drive">
+            <div class="modal-header">
+                <div>
+                    <h2 id="modalTitle"><i>📁</i> Acessar Drive</h2>
+                    <p id="modalSubtitle">Escolha a disciplina para acessar a pasta de materiais.</p>
+                </div>
+                <button type="button" class="modal-close" id="modalClose">✕</button>
+            </div>
+
+            <div class="disciplinas-grid" id="disciplinasGrid"></div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" id="modalCancel">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="modalConfirm" disabled>
+                    Abrir Drive →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ============================================================
+           DISCIPLINAS POR MÓDULO
+           Cada disciplina tem:
+             - urlForm      → link do Google Forms
+             - urlDrive     → link da pasta no Google Drive
+             - urlExercicio → link da lista de exercícios
+           ============================================================ */
+        const disciplinasPorModulo = {
+            java: [
+                { id: 'java3A',       nome: 'JAVA_3A',                prof: 'Prof. André',   icon: '☕',
+                  urlForm:      'https://docs.google.com/forms/d/18zh07OHS7JKcbKxV9txbQBV-WvzFIsvOqK4LVzbCt3k/preview',
+                  urlDrive:     'https://drive.google.com/drive/folders/1CwwjwN8hmJjh68sdvutT0zi3bF9HHpIU?usp=sharing',
+                  urlExercicio: 'https://drive.google.com/drive/folders/15_f9j5z722U26AHRomiFb5pr0JlyQjl1?usp=sharing' },
+                { id: 'java3B', nome: 'JAVA_3B', prof: 'Prof. André',      icon: '📊',
+                  urlForm:      'https://docs.google.com/forms/d/1BFVroNSsl8jkgyCINkCjGL7IZbq1HbOyrHon1SLy1Z4/preview',
+                  urlDrive:     'https://drive.google.com/drive/folders/1CwwjwN8hmJjh68sdvutT0zi3bF9HHpIU?usp=sharing',
+                  urlExercicio: 'https://drive.google.com/drive/folders/1-26DV5APdQimwUaEPJOsNis6CCblUoUP?usp=sharing' }
+                  /*,
+                { id: 'banco',     nome: 'Banco de Dados',     prof: 'Prof. Marcos',   icon: '🗄️',
+                  urlForm:      'https://forms.gle/javaBancoForm',
+                  urlDrive:     'https://drive.google.com/drive/folders/javaBanco',
+                  urlExercicio: 'https://exercicios.com/java/banco' },
+                { id: 'spring',    nome: 'Spring Boot',        prof: 'Prof. Julia',    icon: '🌱',
+                  urlForm:      'https://forms.gle/javaSpringForm',
+                  urlDrive:     'https://drive.google.com/drive/folders/javaSpring',
+                  urlExercicio: 'https://exercicios.com/java/spring' },
+                { id: 'api',       nome: 'APIs REST',          prof: 'Prof. Rafael',   icon: '🔌',
+                  urlForm:      'https://forms.gle/javaApiForm',
+                  urlDrive:     'https://drive.google.com/drive/folders/javaApi',
+                  urlExercicio: 'https://exercicios.com/java/api' },
+                { id: 'testes',    nome: 'Testes Unitários',   prof: 'Prof. Beatriz',  icon: '🧪',
+                  urlForm:      'https://forms.gle/javaTestesForm',
+                  urlDrive:     'https://drive.google.com/drive/folders/javaTestes',
+                  urlExercicio: 'https://exercicios.com/java/testes' }*/
+            ],
+            web: [
+                { id: 'web',  nome: 'WEB_3A',  prof: 'Prof. André',    icon: '🎨',
+                  urlForm:      'https://docs.google.com/forms/d/12tM5QU_5zHObj8q5U54xgckx8b0aLpyKkDZOqBqLwOw/preview',
+                  urlDrive:     'https://drive.google.com/drive/folders/1TcWqHNJl_sxoyTM6iXpK7toaRqAlDt_C?usp=sharing',
+                  urlExercicio: 'https://drive.google.com/drive/folders/1zqaFiiEdQ8VmSRAib30-WrCaWxv06ukx?usp=sharing' },
+                { id: 'web',    nome: 'WEB_3B',  prof: 'Prof. André', icon: '⚡',
+                  urlForm:      'https://docs.google.com/forms/d/1SXpsEPVqvJ9KLfiEbN1jDp-PT72x5pvW4hLbnr698rI/preview',
+                  urlDrive:     'https://drive.google.com/drive/folders/1TcWqHNJl_sxoyTM6iXpK7toaRqAlDt_C?usp=sharing',
+                  urlExercicio: 'https://drive.google.com/drive/folders/1B7jQwQFRYujOke2WFXFlngvCY6cr8JjP?usp=sharing' }
+                  /*,
+                { id: 'react', nome: 'React',       prof: 'Prof. Lucas',    icon: '⚛️',
+                  urlForm:      'https://forms.gle/webReactForm',
+                  urlDrive:     'https://drive.google.com/drive/folders/webReact',
+                  urlExercicio: 'https://exercicios.com/web/react' },
+                { id: 'node',  nome: 'Node.js',     prof: 'Prof. Camila',   icon: '🟢',
+                  urlForm:      'https://forms.gle/webNodeForm',
+                  urlDrive:     'https://drive.google.com/drive/folders/webNode',
+                  urlExercicio: 'https://exercicios.com/web/node' },
+                { id: 'uiux',  nome: 'UI/UX Design',prof: 'Prof. Mariana',  icon: '✨',
+                  urlForm:      'https://forms.gle/webUiuxForm',
+                  urlDrive:     'https://drive.google.com/drive/folders/webUiux',
+                  urlExercicio: 'https://exercicios.com/web/uiux' },
+                { id: 'git',   nome: 'Git & GitHub',prof: 'Prof. Diego',    icon: '🔀',
+                  urlForm:      'https://forms.gle/webGitForm',
+                  urlDrive:     'https://drive.google.com/drive/folders/webGit',
+                  urlExercicio: 'https://exercicios.com/web/git' }*/
+            ],
+            mobile: [
+                { id: 'Mobile',    nome: 'Mobile_3A',           prof: 'Prof. André',  icon: '🐦',
+                  urlForm:      'https://docs.google.com/forms/d/1baM2FtFNMmXYO7zrlM61nRWXOUY1lLl8SbHy9rOeULs/preview',
+                  urlDrive:     'https://drive.google.com/drive/folders/1W94eWdDrX4Rb-Tki917kMJpe2DlAX-UT?usp=sharing',
+                  urlExercicio: 'https://drive.google.com/drive/folders/18hRK4C2jEgaxjAwzIT3VHKqDTKWhYD1C?usp=sharing' },
+                { id: 'Mobile',     nome: 'Mobile_3B',    prof: 'Prof. André', icon: '🤖',
+                  urlForm:      'https://docs.google.com/forms/d/1CCJiQH3z1o9PSHqx8shKUluC3b8ZvHZNqhDuGd1iTjs/preview',
+                  urlDrive:     'https://drive.google.com/drive/folders/1W94eWdDrX4Rb-Tki917kMJpe2DlAX-UT?usp=sharing',
+                  urlExercicio: 'https://drive.google.com/drive/folders/1HU1V-PpVs3UToe08ou-MQILdITTD9121?usp=sharing' }
+                  /*,
+                { id: 'reactn',     nome: 'React Native',      prof: 'Prof. Bruno',    icon: '📱',
+                  urlForm:      'https://forms.gle/mobileReactForm',
+                  urlDrive:     'https://drive.google.com/drive/folders/mobileReact',
+                  urlExercicio: 'https://exercicios.com/mobile/react' },
+                { id: 'swift',      nome: 'Swift iOS',         prof: 'Prof. Amanda',   icon: '🍎',
+                  urlForm:      'https://forms.gle/mobileSwiftForm',
+                  urlDrive:     'https://drive.google.com/drive/folders/mobileSwift',
+                  urlExercicio: 'https://exercicios.com/mobile/swift' },
+                { id: 'api-mob',    nome: 'APIs Mobile',       prof: 'Prof. Thiago',   icon: '🔗',
+                  urlForm:      'https://forms.gle/mobileApiForm',
+                  urlDrive:     'https://drive.google.com/drive/folders/mobileApi',
+                  urlExercicio: 'https://exercicios.com/mobile/api' },
+                { id: 'publicacao', nome: 'Publicação de Apps',prof: 'Prof. Vanessa',  icon: '🚀',
+                  urlForm:      'https://forms.gle/mobilePubForm',
+                  urlDrive:     'https://drive.google.com/drive/folders/mobilePub',
+                  urlExercicio: 'https://exercicios.com/mobile/publicacao' }
+                  */
+            ]
+        };
+
+        /* ============================================================
+           CONFIGURAÇÃO DOS TIPOS DE MODAL
+           Cada tipo (drive / formulario / exercicio) define:
+             - titulo, subtitulo, icone, rótulo do botão
+             - qual propriedade usar da disciplina
+           ============================================================ */
+        const tiposModal = {
+            drive: {
+                titulo:    'Acessar Drive',
+                subtitulo: 'Escolha a disciplina para acessar a pasta de materiais.',
+                icone:     '📁',
+                botao:     'Abrir Drive →',
+                campoUrl:  'urlDrive'
+            },
+            formulario: {
+                titulo:    'Enviar Formulário',
+                subtitulo: 'Escolha a disciplina para a qual deseja enviar o formulário.',
+                icone:     '📋',
+                botao:     'Abrir formulário →',
+                campoUrl:  'urlForm'
+            },
+            exercicio: {
+                titulo:    'Acessar Exercício',
+                subtitulo: 'Escolha a disciplina para acessar a lista de exercícios.',
+                icone:     '💻',
+                botao:     'Abrir exercício →',
+                campoUrl:  'urlExercicio'
+            }
+        };
+
+        /* ============================================================
+           NAVEGAÇÃO
+           ============================================================ */
+        const menuButtons = document.querySelectorAll('.menu-btn');
+        const pages       = document.querySelectorAll('.page');
+
+        function switchPage(pageId) {
+            pages.forEach(p => p.classList.remove('active'));
+            menuButtons.forEach(b => b.classList.remove('active'));
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) targetPage.classList.add('active');
+            const targetBtn = Array.from(menuButtons).find(b => b.dataset.page === pageId);
+            if (targetBtn) targetBtn.classList.add('active');
+        }
+
+        menuButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const pageId = btn.dataset.page;
+                if (pageId) switchPage(pageId);
+            });
+        });
+
+        /* ============================================================
+           MODAL GENÉRICO (reutilizado para Drive, Formulário e Exercício)
+           ============================================================ */
+        const modal          = document.getElementById('modal');
+        const modalBox       = document.getElementById('modalBox');
+        const modalTitle     = document.getElementById('modalTitle');
+        const modalSubtitle  = document.getElementById('modalSubtitle');
+        const modalClose     = document.getElementById('modalClose');
+        const modalCancel    = document.getElementById('modalCancel');
+        const modalConfirm   = document.getElementById('modalConfirm');
+        const disciplinasGrid= document.getElementById('disciplinasGrid');
+
+        let disciplinaSelecionada = null;
+        let tipoModalAtual        = 'drive';
+
+        function abrirModal(tipo, pagina) {
+            const config = tiposModal[tipo];
+            if (!config) return;
+
+            tipoModalAtual = tipo;
+            disciplinaSelecionada = null;
+            modalConfirm.disabled = true;
+
+            // Atualiza cabeçalho e botão do modal conforme o tipo
+            modalBox.dataset.tipo = tipo;
+            modalTitle.innerHTML = '<i>' + config.icone + '</i> ' + config.titulo;
+            modalSubtitle.textContent = config.subtitulo;
+            modalConfirm.innerHTML = config.botao;
+
+            // Renderiza as disciplinas do módulo atual
+            const disciplinas = disciplinasPorModulo[pagina] || [];
+            disciplinasGrid.innerHTML = '';
+
+            disciplinas.forEach(disc => {
+                const card = document.createElement('div');
+                card.className = 'disciplina-card';
+                card.innerHTML =
+                    '<div class="icon">' + disc.icon + '</div>' +
+                    '<div class="name">' + disc.nome + '</div>' +
+                    '<div class="prof">' + disc.prof + '</div>';
+
+                card.addEventListener('click', () => {
+                    disciplinasGrid.querySelectorAll('.disciplina-card')
+                        .forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    disciplinaSelecionada = disc;
+                    modalConfirm.disabled = false;
+                });
+
+                disciplinasGrid.appendChild(card);
+            });
+
+            modal.classList.add('show');
+        }
+
+        function fecharModal() {
+            modal.classList.remove('show');
+            disciplinaSelecionada = null;
+            modalConfirm.disabled = true;
+        }
+
+        // Botões "Drive"
+        document.querySelectorAll('[data-drive-page]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                abrirModal('drive', btn.dataset.drivePage);
+            });
+        });
+
+        // Botões "Formulário"
+        document.querySelectorAll('[data-form-page]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                abrirModal('formulario', btn.dataset.formPage);
+            });
+        });
+
+        // Botões "Exercício"
+        document.querySelectorAll('[data-exercicio-page]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                abrirModal('exercicio', btn.dataset.exercicioPage);
+            });
+        });
+
+        // Fechar modal
+        modalClose.addEventListener('click', fecharModal);
+        modalCancel.addEventListener('click', fecharModal);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) fecharModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('show')) {
+                fecharModal();
+            }
+        });
+
+        // Confirmar
+        modalConfirm.addEventListener('click', () => {
+            if (!disciplinaSelecionada) return;
+
+            const config = tiposModal[tipoModalAtual];
+            const url = disciplinaSelecionada[config.campoUrl];
+
+            if (url && url !== '#') {
+                window.open(url, '_blank');
+            } else {
+                alert('O ' + tipoModalAtual + ' de "' + disciplinaSelecionada.nome + '" ainda não foi configurado.');
+            }
+
+            fecharModal();
+        });
+    </script>
+</body>
+</html>
