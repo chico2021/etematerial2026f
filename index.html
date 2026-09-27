@@ -204,11 +204,22 @@
         .link-form i { color: #d93025; }
         .link-exercicio i { color: #0f9d58; }
 
-        /* ===== IFRAME ===== */
-        .iframe-wrapper {
+        /* ===== ÁREA DOS IFRAMES (empilhados verticalmente com altura ampliada) ===== */
+        .iframes-col {
             flex: 1;
-            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
             min-height: 0;
+            width: 100%;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        .iframe-wrapper {
+            /* Altura ampliada e fixa para dar mais visibilidade ao conteúdo */
+            height: 85vh;
+            min-height: 700px;
             background: white;
             border-radius: 16px;
             box-shadow: 0 10px 22px -8px rgba(0, 0, 0, 0.12);
@@ -216,6 +227,7 @@
             overflow: hidden;
             display: flex;
             transition: box-shadow 0.2s;
+            flex-shrink: 0;
         }
 
         .iframe-wrapper:hover {
@@ -229,6 +241,22 @@
             display: block;
             background: #ffffff;
             flex: 1;
+        }
+
+        /* Barra de rolagem mais discreta */
+        .iframes-col::-webkit-scrollbar {
+            width: 8px;
+        }
+        .iframes-col::-webkit-scrollbar-track {
+            background: #eef3f8;
+            border-radius: 10px;
+        }
+        .iframes-col::-webkit-scrollbar-thumb {
+            background: #b8cfe3;
+            border-radius: 10px;
+        }
+        .iframes-col::-webkit-scrollbar-thumb:hover {
+            background: #2a7faa;
         }
 
         /* ============================================================
@@ -489,6 +517,11 @@
             .link-card i {
                 font-size: 1.3rem;
             }
+            /* Em tablets, altura um pouco menor mas ainda ampla */
+            .iframe-wrapper {
+                height: 75vh;
+                min-height: 550px;
+            }
         }
 
         @media (max-width: 600px) {
@@ -510,6 +543,14 @@
             .btn {
                 width: 100%;
                 justify-content: center;
+            }
+            /* Em celulares, altura confortável para leitura */
+            .iframe-wrapper {
+                height: 70vh;
+                min-height: 450px;
+            }
+            .iframes-col {
+                gap: 14px;
             }
         }
     </style>
@@ -553,10 +594,15 @@
                         </button>
                     </div>
                 </div>
-                <div class="iframe-wrapper">
-                    <iframe src="https://docs.google.com/spreadsheets/d/1K0y6zofJ8ruDF2v2ibeZWRTevu9gHHV3aA4B_0pdqYQ/edit?usp=sharing" title="Planilha Java" allowfullscreen></iframe>
+                <div class="iframes-col">
+                    <div class="iframe-wrapper">
+                        <iframe src="https://docs.google.com/spreadsheets/d/1K0y6zofJ8ruDF2v2ibeZWRTevu9gHHV3aA4B_0pdqYQ/edit?usp=sharing" title="Planilha Java 1" allowfullscreen></iframe>
+                    </div>
+                    <div class="iframe-wrapper">
+                        <iframe src="https://docs.google.com/spreadsheets/d/1Am5J_abtJrJkJQLOZmnHwvRSKkWfU4HmOfxLLiqGkM0/edit?usp=sharing" title="Planilha Java 2" allowfullscreen></iframe>
+                    </div>
                 </div>
-                </section>
+            </section>
 
             <!-- PÁGINA WEB -->
             <section id="web" class="page">
@@ -574,8 +620,13 @@
                         </button>
                     </div>
                 </div>
-                <div class="iframe-wrapper">
-                    <iframe src="https://docs.google.com/spreadsheets/d/1exNnoCyQcNWTcZ9QDKppnv-J4cwwkiOt7S2nzvPCQuY/edit?usp=sharing" title="Planilha WEB" allowfullscreen></iframe>
+                <div class="iframes-col">
+                    <div class="iframe-wrapper">
+                        <iframe src="https://docs.google.com/spreadsheets/d/1exNnoCyQcNWTcZ9QDKppnv-J4cwwkiOt7S2nzvPCQuY/edit?usp=sharing" title="Planilha WEB 1" allowfullscreen></iframe>
+                    </div>
+                    <div class="iframe-wrapper">
+                        <iframe src="https://docs.google.com/spreadsheets/d/1Tk45ET97yfzCBygFI_nurOKH0V5S1muz12c9V-jbjKA/edit?usp=sharing" title="Planilha WEB 2" allowfullscreen></iframe>
+                    </div>
                 </div>
             </section>
 
@@ -595,8 +646,13 @@
                         </button>
                     </div>
                 </div>
-                <div class="iframe-wrapper">
-                    <iframe src="https://docs.google.com/spreadsheets/d/1fGVQVGjloalGhrH6V1BlUStp0H6uorcR7r6ESkDJHys/edit?usp=sharing" title="Planilha Mobile" allowfullscreen></iframe>
+                <div class="iframes-col">
+                    <div class="iframe-wrapper">
+                        <iframe src="https://docs.google.com/spreadsheets/d/1fGVQVGjloalGhrH6V1BlUStp0H6uorcR7r6ESkDJHys/edit?usp=sharing" title="Planilha Mobile 1" allowfullscreen></iframe>
+                    </div>
+                    <div class="iframe-wrapper">
+                        <iframe src="https://docs.google.com/spreadsheets/d/1x54PhliayCIjLdI2OqAAdUf6n-vXE2UkOUFU30vLFkU/edit?usp=sharing" title="Planilha Mobile 2" allowfullscreen></iframe>
+                    </div>
                 </div>
             </section>
         </main>
@@ -629,10 +685,6 @@
     <script>
         /* ============================================================
            DISCIPLINAS POR MÓDULO
-           Cada disciplina tem:
-             - urlForm      → link do Google Forms
-             - urlDrive     → link da pasta no Google Drive
-             - urlExercicio → link da lista de exercícios
            ============================================================ */
         const disciplinasPorModulo = {
             java: [
@@ -644,23 +696,6 @@
                   urlForm:      'https://docs.google.com/forms/d/1BFVroNSsl8jkgyCINkCjGL7IZbq1HbOyrHon1SLy1Z4/preview',
                   urlDrive:     'https://drive.google.com/drive/folders/1CwwjwN8hmJjh68sdvutT0zi3bF9HHpIU?usp=sharing',
                   urlExercicio: 'https://drive.google.com/drive/folders/1-26DV5APdQimwUaEPJOsNis6CCblUoUP?usp=sharing' }
-                  /*,
-                { id: 'banco',     nome: 'Banco de Dados',     prof: 'Prof. Marcos',   icon: '🗄️',
-                  urlForm:      'https://forms.gle/javaBancoForm',
-                  urlDrive:     'https://drive.google.com/drive/folders/javaBanco',
-                  urlExercicio: 'https://exercicios.com/java/banco' },
-                { id: 'spring',    nome: 'Spring Boot',        prof: 'Prof. Julia',    icon: '🌱',
-                  urlForm:      'https://forms.gle/javaSpringForm',
-                  urlDrive:     'https://drive.google.com/drive/folders/javaSpring',
-                  urlExercicio: 'https://exercicios.com/java/spring' },
-                { id: 'api',       nome: 'APIs REST',          prof: 'Prof. Rafael',   icon: '🔌',
-                  urlForm:      'https://forms.gle/javaApiForm',
-                  urlDrive:     'https://drive.google.com/drive/folders/javaApi',
-                  urlExercicio: 'https://exercicios.com/java/api' },
-                { id: 'testes',    nome: 'Testes Unitários',   prof: 'Prof. Beatriz',  icon: '🧪',
-                  urlForm:      'https://forms.gle/javaTestesForm',
-                  urlDrive:     'https://drive.google.com/drive/folders/javaTestes',
-                  urlExercicio: 'https://exercicios.com/java/testes' }*/
             ],
             web: [
                 { id: 'web',  nome: 'WEB_3A',  prof: 'Prof. André',    icon: '🎨',
@@ -671,23 +706,6 @@
                   urlForm:      'https://docs.google.com/forms/d/1SXpsEPVqvJ9KLfiEbN1jDp-PT72x5pvW4hLbnr698rI/preview',
                   urlDrive:     'https://drive.google.com/drive/folders/1TcWqHNJl_sxoyTM6iXpK7toaRqAlDt_C?usp=sharing',
                   urlExercicio: 'https://drive.google.com/drive/folders/1B7jQwQFRYujOke2WFXFlngvCY6cr8JjP?usp=sharing' }
-                  /*,
-                { id: 'react', nome: 'React',       prof: 'Prof. Lucas',    icon: '⚛️',
-                  urlForm:      'https://forms.gle/webReactForm',
-                  urlDrive:     'https://drive.google.com/drive/folders/webReact',
-                  urlExercicio: 'https://exercicios.com/web/react' },
-                { id: 'node',  nome: 'Node.js',     prof: 'Prof. Camila',   icon: '🟢',
-                  urlForm:      'https://forms.gle/webNodeForm',
-                  urlDrive:     'https://drive.google.com/drive/folders/webNode',
-                  urlExercicio: 'https://exercicios.com/web/node' },
-                { id: 'uiux',  nome: 'UI/UX Design',prof: 'Prof. Mariana',  icon: '✨',
-                  urlForm:      'https://forms.gle/webUiuxForm',
-                  urlDrive:     'https://drive.google.com/drive/folders/webUiux',
-                  urlExercicio: 'https://exercicios.com/web/uiux' },
-                { id: 'git',   nome: 'Git & GitHub',prof: 'Prof. Diego',    icon: '🔀',
-                  urlForm:      'https://forms.gle/webGitForm',
-                  urlDrive:     'https://drive.google.com/drive/folders/webGit',
-                  urlExercicio: 'https://exercicios.com/web/git' }*/
             ],
             mobile: [
                 { id: 'Mobile',    nome: 'Mobile_3A',           prof: 'Prof. André',  icon: '🐦',
@@ -698,32 +716,11 @@
                   urlForm:      'https://docs.google.com/forms/d/1CCJiQH3z1o9PSHqx8shKUluC3b8ZvHZNqhDuGd1iTjs/preview',
                   urlDrive:     'https://drive.google.com/drive/folders/1W94eWdDrX4Rb-Tki917kMJpe2DlAX-UT?usp=sharing',
                   urlExercicio: 'https://drive.google.com/drive/folders/1HU1V-PpVs3UToe08ou-MQILdITTD9121?usp=sharing' }
-                  /*,
-                { id: 'reactn',     nome: 'React Native',      prof: 'Prof. Bruno',    icon: '📱',
-                  urlForm:      'https://forms.gle/mobileReactForm',
-                  urlDrive:     'https://drive.google.com/drive/folders/mobileReact',
-                  urlExercicio: 'https://exercicios.com/mobile/react' },
-                { id: 'swift',      nome: 'Swift iOS',         prof: 'Prof. Amanda',   icon: '🍎',
-                  urlForm:      'https://forms.gle/mobileSwiftForm',
-                  urlDrive:     'https://drive.google.com/drive/folders/mobileSwift',
-                  urlExercicio: 'https://exercicios.com/mobile/swift' },
-                { id: 'api-mob',    nome: 'APIs Mobile',       prof: 'Prof. Thiago',   icon: '🔗',
-                  urlForm:      'https://forms.gle/mobileApiForm',
-                  urlDrive:     'https://drive.google.com/drive/folders/mobileApi',
-                  urlExercicio: 'https://exercicios.com/mobile/api' },
-                { id: 'publicacao', nome: 'Publicação de Apps',prof: 'Prof. Vanessa',  icon: '🚀',
-                  urlForm:      'https://forms.gle/mobilePubForm',
-                  urlDrive:     'https://drive.google.com/drive/folders/mobilePub',
-                  urlExercicio: 'https://exercicios.com/mobile/publicacao' }
-                  */
             ]
         };
 
         /* ============================================================
            CONFIGURAÇÃO DOS TIPOS DE MODAL
-           Cada tipo (drive / formulario / exercicio) define:
-             - titulo, subtitulo, icone, rótulo do botão
-             - qual propriedade usar da disciplina
            ============================================================ */
         const tiposModal = {
             drive: {
@@ -794,13 +791,11 @@
             disciplinaSelecionada = null;
             modalConfirm.disabled = true;
 
-            // Atualiza cabeçalho e botão do modal conforme o tipo
             modalBox.dataset.tipo = tipo;
             modalTitle.innerHTML = '<i>' + config.icone + '</i> ' + config.titulo;
             modalSubtitle.textContent = config.subtitulo;
             modalConfirm.innerHTML = config.botao;
 
-            // Renderiza as disciplinas do módulo atual
             const disciplinas = disciplinasPorModulo[pagina] || [];
             disciplinasGrid.innerHTML = '';
 
@@ -832,28 +827,24 @@
             modalConfirm.disabled = true;
         }
 
-        // Botões "Drive"
         document.querySelectorAll('[data-drive-page]').forEach(btn => {
             btn.addEventListener('click', () => {
                 abrirModal('drive', btn.dataset.drivePage);
             });
         });
 
-        // Botões "Formulário"
         document.querySelectorAll('[data-form-page]').forEach(btn => {
             btn.addEventListener('click', () => {
                 abrirModal('formulario', btn.dataset.formPage);
             });
         });
 
-        // Botões "Exercício"
         document.querySelectorAll('[data-exercicio-page]').forEach(btn => {
             btn.addEventListener('click', () => {
                 abrirModal('exercicio', btn.dataset.exercicioPage);
             });
         });
 
-        // Fechar modal
         modalClose.addEventListener('click', fecharModal);
         modalCancel.addEventListener('click', fecharModal);
 
@@ -867,7 +858,6 @@
             }
         });
 
-        // Confirmar
         modalConfirm.addEventListener('click', () => {
             if (!disciplinaSelecionada) return;
 
